@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create User</title>
-    
-</head>
-<body>
+  </head>
+  <body>
     <h1>Create User</h1>
-    <form action="http://localhost:3000/register" method="post">
-        <label for="user_id">User ID</label>
-        <input type="text" placeholder="Enter User Name" name="username">
-         <div>
-        <label for="user_id">Password</label>
-        <input type="text" placeholder="Enter User password" name="password">
-         </div>
-        <button>Submit</button>
+    <form action="http://localhost:3000/create" method="post">
+      <label for="user_id">User ID</label>
+      <input type="text" placeholder="Enter id" name="user_id" />
+      <div>
+        <label for="password">Password</label>
+        <input type="text" placeholder="Enter User password" name="password" />
+      </div>
+      <button>Submit</button>
     </form>
-</body>
+
+    <h1>View User</h1>
+    <div><h3>5644</h3></div>
+    <div><h3>5645</h3></div>
+  </body>
 </html>

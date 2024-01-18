@@ -23,3 +23,23 @@ const adminSchema = new mongoose.Schema({
 
 
 exports.Admin = mongoose.model("Admin",adminSchema);
+
+const userSchema = new mongoose.Schema({
+    user_id: {
+        type: Number,
+        required: true,
+        unique: true,
+    },
+    name: {
+        type: String,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    photo: {
+        type: Buffer, // Store image data as Buffer
+    },
+});
+
+exports.User = mongoose.model("User", userSchema);

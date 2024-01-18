@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-
-const {connectMongodb,Admin} = require('./database.js');
+const apiRoutes = require('./routes/get.js');
+const {connectMongodb,Admin,User} = require('./database.js');
 const PORT = 3000;
 const passport = require("passport");
 const {initializingPassport,isAuthenticated} = require('./passportconfig.js')
@@ -17,6 +17,7 @@ connectMongodb();
 initializingPassport(passport);
 
 
+app.use('/',apiRoutes);
 app.get('/login',(req,res)=>{
     res.render("AdminLogin");
 })
@@ -36,6 +37,14 @@ app.post('/register',async(req,res)=>{
     if(admin) return res.status(400).send('This admin is already exists');
     const newAdmin = await Admin.create(req.body);
     res.status(201).send(newAdmin);
+})
+
+
+app.post('/create',async(req,res)=>{
+    const user = await User.findOne({user_id:req.body.user_id});
+    if(user) return res.status(400).send('already exists');
+    const newUser = await User.create(req.body);
+    res.status(201).send(newUser);
 })
 
 // login required
