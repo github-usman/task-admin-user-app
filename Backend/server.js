@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const apiRoutes = require('./routes/get.js');
 const {connectMongodb,Admin,User} = require('./database.js');
 const PORT = 3000;
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(passport.session());
 app.use(passport.initialize());
-
+app.use(cors());
 connectMongodb();
 initializingPassport(passport);
 

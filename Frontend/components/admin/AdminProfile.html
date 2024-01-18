@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create User</title>
+    <style>
+        .special-user{
+            background-color: blue;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        .regular-user{
+            background-color: green;
+        }
+    </style>
   </head>
   <body>
     <h1>Create User</h1>
@@ -12,13 +22,18 @@
       <input type="text" placeholder="Enter id" name="user_id" />
       <div>
         <label for="password">Password</label>
-        <input type="text" placeholder="Enter User password" name="password" />
+        <input type="password" placeholder="Enter User password" name="password" />
       </div>
       <button>Submit</button>
     </form>
+ 
+ 
 
-    <h1>View User</h1>
-    <div><h3>5644</h3></div>
-    <div><h3>5645</h3></div>
+    <h1 class="hello">View User</h1>
+
+    <div id="two-container" ></div>
+    <a href="./AllUsersForAdmin.html"><h1>View All User</h1></a>
+
+    <script src="getUsersList.js"></script>
   </body>
 </html>

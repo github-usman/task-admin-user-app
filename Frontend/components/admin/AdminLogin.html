@@ -6,11 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="http://localhost:3000/login" method="get">
+    <form action="http://localhost:3000/login" method="post">
         <div style="display: flex; flex-direction: column;height:100vh;align-items: center;">
-        <input type="text" placeholder="Enter User Name" name="username">
-        <input type="text" placeholder="Enter User password" name="password">
-        <button>Login</button>
+        <input type="text" placeholder="Enter User Name" name="username" required>
+        <input type="password" placeholder="Enter User password" name="password" required>
+        <button style="padding: 1rem 2rem; margin-top: 3rem;">Login</button>
         </div>
     </form>
 </body>
