@@ -10,3 +10,16 @@ exports.connectMongodb=()=>{
         process.stdout.write(`Error DB connectivity ${e}`);
     })
 }
+
+
+const adminSchema = new mongoose.Schema({
+    username:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    password:String,
+});
+
+
+exports.Admin = mongoose.model("Admin",adminSchema);
