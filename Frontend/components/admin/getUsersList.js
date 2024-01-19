@@ -18,7 +18,7 @@ function fetchData() {
 
 function renderDataTwo(data) {
     console.log("Rendering data for two:", data);
-  const container = document.getElementById("two-container");
+  const container = document.getElementById("cardOfUser");
 
   if (Array.isArray(data) && data.length > 0) {
     let cnt = 0;
@@ -31,7 +31,8 @@ function renderDataTwo(data) {
 
         const paragraph = document.createElement("p");
         paragraph.textContent = `User ID: ${item.user_id}`;
-        div.classList.add("special-user");
+        div.classList.add("outerView");
+        paragraph.classList.add("innerView");
         div.appendChild(paragraph);
         container.appendChild(div);
       } else {

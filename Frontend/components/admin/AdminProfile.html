@@ -2,39 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../styleAdminProfile.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create User</title>
-    <style>
-        .special-user{
-            background-color: blue;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
-        .regular-user{
-            background-color: green;
-        }
-    </style>
+ 
   </head>
   <body>
-    <h1>Create User</h1>
-    <form action="http://localhost:3000/create" method="post" enctype="multipart/form-data">
-      <label for="user_id">User ID</label>
-      <input type="text" placeholder="Enter id" name="user_id" />
-      <div>
-        <label for="password">Password</label>
-        <input type="password" placeholder="Enter User password" name="password" />
+    <div class="main">
+    <div class="leftForm">
+        <form action="http://localhost:3000/create" method="post" enctype="multipart/form-data">
+          <h1 class="mb-5 text-center">Create User</h1>
+          <label class="w-10" for="user_id">User ID</label>
+          <input type="text" name="user_id"  class="mb-3 form-control p-2"/>
+          <div>
+            <label for="password">Password</label>
+            <input type="password"  name="password" class="mb-3 form-control p-2"/>
+          </div>
+        
+          <button class="btn btn-primary w-100 p-2 mt-3 ">Submit</button>
+        </form>
       </div>
-        <input type="file" name="dispImage">
-      <button>Submit</button>
-    </form>
- 
- 
-
-    <h1 class="hello">View User</h1>
-
-    <div id="two-container" ></div>
-    <a href="./AllUsersForAdmin.html"><h1>View All User</h1></a>
-
+      <div class="hrBase">
+        <hr>
+      </div>
+    
+      <div>
+      <h1 class="mb-5 text-center">View User</h1>
+        
+        <div class="formRight" id="cardOfUser">
+        </div>
+        <a class="btn btn-primary anchorBtn mt-5" href="./AllUsersForAdmin.html"><p>View</p></a>
+       </div>
+    </div>
     <script src="getUsersList.js"></script>
   </body>
 </html>
