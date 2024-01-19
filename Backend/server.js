@@ -5,7 +5,7 @@ const apiRoutes = require('./routes/get.js');
 const {connectMongodb,Admin,User} = require('./database.js');
 const PORT = 3000;
 const passport = require("passport");
-const {initializingPassport,isAuthenticated} = require('./passportconfig.js')
+const {initializingPassport,isAuthenticated,isAuthenticatedUser} = require('./passportconfig.js')
 const expressSession = require('express-session')
 
 app.use(expressSession({secret:"secret",resave:false,saveUninitialized:false}))
@@ -25,10 +25,19 @@ app.get('/login',(req,res)=>{
 
 app.post('/login',passport.authenticate("local",{failureMessage:"Wrong Id Password",
     successMessage:'successfully logged in',
-    successRedirect:'http://127.0.0.1:5500/components/admin/AdminProfile.html'}),
+    successRedirect:'http://127.0.0.1:5500/Frontend/components/admin/AdminProfile.html'}),
     async(req,res)=>{
 
 })
+
+app.post('/user-login',passport.authenticate("local",{failureMessage:"Wrong Id Password",
+    successMessage:'successfully logged in',
+    successRedirect:'http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html'}),
+    async(req,res)=>{
+
+})
+
+
 
 
 
@@ -98,7 +107,6 @@ const Storage2 = multer.diskStorage({
 });
 const upload2 = multer({ storage: Storage2 }).single('dispImage');
 
-// end images
 app.post('/update/:user_id', async (req, res) => {
     try {
         const { user_id } = req.params;
@@ -110,7 +118,7 @@ app.post('/update/:user_id', async (req, res) => {
             return res.status(404).send('User not found');
         }
 
-        // Proceed with image upload and update the existing user's dispImage and name
+        // Upload the file
         upload2(req, res, async (err) => {
             if (err) {
                 console.log(err);
@@ -118,13 +126,10 @@ app.post('/update/:user_id', async (req, res) => {
             }
 
             // Update dispImage and name fields if provided in the request body
-            if (req.body.name) {
-                existingUser.name = req.body.name;
-            }
 
-            if (req.body.user_id) {
-                existingUser.dispImage = req.body.user_id;
-            }
+                existingUser.name = req.body.name;
+                existingUser.dispImage = `user_${user_id}`;
+            console.log(existingUser.name,existingUser.dispImage, "both value");
 
             // Save the updated user
             await existingUser.save();
@@ -136,18 +141,12 @@ app.post('/update/:user_id', async (req, res) => {
     }
 });
 
-
-// app.post('/create',async(req,res)=>{
-//     const user = await User.findOne({user_id:req.body.user_id});
-//     if(user) return res.status(400).send('already exists');
-//     const newUser = await User.create(req.body);
-//     res.status(201).send(newUser);
-// })
-
 // login required
 app.get('/profile',isAuthenticated,(req,res)=>{
     res.send(req.admin)
 })
+
+
 
 app.listen(PORT || process.env.PORT,()=>{
     process.stdout.write(`listening on http://localHost ${PORT}\n`);

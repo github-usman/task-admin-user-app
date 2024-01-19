@@ -33,17 +33,29 @@ function renderAllUserData(data) {
       const name = document.createElement("p");
       const nameid = document.createElement("p");
       const dispImage = document.createElement("img");
-
+      const btn = document.createElement('button');
+      btn.innerText = 'delete'
       user_id.textContent = `User ID: ${item.user_id}`;
-   
+      
       name.textContent = `Name : ${item.name}`
-      dispImage.src = `../../../Backend/uploadedImages/user_${item.dispImage}.jpeg`;
-      nameid.textContent = `Userid value is  ../../../Backend/uploadedImages/user_${item.dispImage+'.jpeg'}`;
+      dispImage.src = `../../../Backend/uploadedImages/${item.dispImage}.jpeg`;
+      // user is updated the value the it will start with 'u'
+      if(item.dispImage[0] !== 'u'){
+        dispImage.src = `../../../Backend/uploadedImages/userDummy.png`;
+      }
+
       div.appendChild(user_id);
       div.appendChild(name)
       div.appendChild(dispImage);
       div.appendChild(nameid);
+      div.appendChild(btn);
+
       container.appendChild(div);
+      div.style.border = "1px solid #000"; 
+      div.style.padding = '1rem',
+      div.style.margin = '1rem 0',
+      div.style.display = 'flex',
+      div.style.justifyContent = 'space-between'
       div.classList.add("special-user");
     });
   } else {
