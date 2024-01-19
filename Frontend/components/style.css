@@ -1,0 +1,50 @@
+
+        .flex {
+            display: flex;
+            height: 100vh;
+        }
+        .backgroundImage {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('../backround-cirlce.png'); 
+            background-size: cover;
+            background-position: center;
+            overflow:visible;
+            flex: 1;
+        }
+        .backgroundImage>div>h1{
+            color: rgb(20, 51, 189);
+            text-align: center;
+        }
+
+        .backgroundImage>div{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 15%;
+            width: 30%;
+            background-color:#f2f5f3;
+            text-align: center;
+        }
+
+        .form-container {
+            flex-direction: column;
+            height: 100vh;
+            margin: auto;
+            width: 40%;
+            text-align: center;
+        }
+        .form-container>form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            margin: auto;
+            height: 100vh;
+        }
+        .form-container>form>h1{
+            color: #212922a5;
+        }
+    

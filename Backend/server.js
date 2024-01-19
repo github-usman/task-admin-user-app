@@ -2,52 +2,49 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const apiRoutes = require('./routes/get.js');
-const {connectMongodb,Admin,User} = require('./database.js');
+const { connectMongodb, Admin, User } = require('./database.js');
 const PORT = 3000;
 const passport = require("passport");
-const {initializingPassport,isAuthenticated,isAuthenticatedUser} = require('./passportconfig.js')
-const expressSession = require('express-session')
+const { initializingPassport } = require('./passportconfig.js');
+const expressSession = require('express-session');
 
-app.use(expressSession({secret:"secret",resave:false,saveUninitialized:false}))
+app.use(expressSession({ secret: "secret", resave: false, saveUninitialized: false }));
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(passport.session());
 app.use(passport.initialize());
 app.use(cors());
 connectMongodb();
 initializingPassport(passport);
 
+app.use('/', apiRoutes);
 
-app.use('/',apiRoutes);
-app.get('/login',(req,res)=>{
+app.get('/login', (req, res) => {
     res.render("AdminLogin");
-})
+});
 
-app.post('/login',passport.authenticate("local",{failureMessage:"Wrong Id Password",
-    successMessage:'successfully logged in',
-    successRedirect:'http://127.0.0.1:5500/Frontend/components/admin/AdminProfile.html'}),
-    async(req,res)=>{
+app.post('/login', passport.authenticate("admin", {
+    failureMessage: "Wrong Id Password",
+    successMessage: 'successfully logged in',
+    successRedirect: 'http://127.0.0.1:5500/Frontend/components/admin/AdminProfile.html'
+}), async (req, res) => {
+    // Handle successful admin authentication
+});
 
-})
+app.post('/user-login', passport.authenticate("user", {
+    failureMessage: "Wrong Id Password",
+    successMessage: 'successfully logged in',
+    successRedirect: 'http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html'
+}), async (req, res) => {
+    // Handle successful user authentication
+});
 
-app.post('/user-login',passport.authenticate("local",{failureMessage:"Wrong Id Password",
-    successMessage:'successfully logged in',
-    successRedirect:'http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html'}),
-    async(req,res)=>{
-
-})
-
-
-
-
-
-
-app.post('/register',async(req,res)=>{
-    const admin = await Admin.findOne({username:req.body.username});
-    if(admin) return res.status(400).send('This admin is already exists');
+app.post('/register', async (req, res) => {
+    const admin = await Admin.findOne({ username: req.body.username });
+    if (admin) return res.status(400).send('This admin is already exists');
     const newAdmin = await Admin.create(req.body);
     res.status(201).send(newAdmin);
-})
+});
 
 // image multer
 const multer = require('multer');
@@ -142,7 +139,7 @@ app.post('/update/:user_id', async (req, res) => {
 });
 
 // login required
-app.get('/profile',isAuthenticated,(req,res)=>{
+app.get('/profile',(req,res)=>{
     res.send(req.admin)
 })
 

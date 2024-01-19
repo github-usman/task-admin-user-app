@@ -3,15 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
     <title>Document</title>
 </head>
 <body>
-    <form action="http://localhost:3000/login" method="post">
-        <div style="display: flex; flex-direction: column;height:100vh;align-items: center;">
-        <input type="text" placeholder="Enter User Name" name="username" required>
-        <input type="password" placeholder="Enter User password" name="password" required>
-        <button style="padding: 1rem 2rem; margin-top: 3rem;">Login</button>
+    <div class="flex">
+        <div class="backgroundImage">
+            <!-- You can add a logo or any other content here if needed -->
+            <div><h1 class="text-uppercase ">Logo</h1></div>
         </div>
-    </form>
+        <div class="form-container">
+            <form action="http://localhost:3000/login" method="post">
+                <h1 class="my-5">Admin Login</h1>
+                <input type="text" placeholder="User ID" name="username" required class="mb-3 form-control p-2">
+                <input  type="password" placeholder="Password" name="password" required class="mb-3 form-control p-2">
+                <button class="btn btn-primary w-100 p-2 my-4">Login</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
