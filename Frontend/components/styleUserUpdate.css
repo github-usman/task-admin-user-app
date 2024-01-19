@@ -20,3 +20,12 @@
     display: none; 
 }
 
+body{
+    position: relative;
+}
+
+.viewBtn{
+    position: absolute;
+    right: 1%;
+    top:1%
+}
