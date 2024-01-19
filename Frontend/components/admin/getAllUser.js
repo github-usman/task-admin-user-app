@@ -31,13 +31,17 @@ function renderAllUserData(data) {
         
       const user_id = document.createElement("p");
       const name = document.createElement("p");
-      const nameid = document.createElement("p");
       const dispImage = document.createElement("img");
+      const btnDiv = document.createElement("div");
       const btn = document.createElement('button');
-      btn.innerText = 'delete'
-      user_id.textContent = `User ID: ${item.user_id}`;
+      btn.classList.add('deleteBtn')
+      btn.innerText = 'delete' 
+      const btndone = document.createElement('button');
+      btndone.classList.add('btndone')
+      btndone.innerText = 'Done'
+      user_id.textContent = `${item.user_id}`;
       
-      name.textContent = `Name : ${item.name}`
+      name.textContent = `${item.name}`
       dispImage.src = `../../../Backend/uploadedImages/${item.dispImage}.jpeg`;
       // user is updated the value the it will start with 'u'
       if(item.dispImage[0] !== 'u'){
@@ -47,16 +51,13 @@ function renderAllUserData(data) {
       div.appendChild(user_id);
       div.appendChild(name)
       div.appendChild(dispImage);
-      div.appendChild(nameid);
-      div.appendChild(btn);
+      btnDiv.appendChild(btn)
+      btnDiv.appendChild(btndone)
+
+      div.appendChild(btnDiv);
 
       container.appendChild(div);
-      div.style.border = "1px solid #000"; 
-      div.style.padding = '1rem',
-      div.style.margin = '1rem 0',
-      div.style.display = 'flex',
-      div.style.justifyContent = 'space-between'
-      div.classList.add("special-user");
+      div.classList.add("allData");
     });
   } else {
     container.innerHTML = "<p>No data available</p>";

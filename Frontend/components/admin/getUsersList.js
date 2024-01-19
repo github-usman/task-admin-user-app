@@ -31,7 +31,7 @@ function renderDataTwo(data) {
 
         const paragraph = document.createElement("p");
         const badge = document.createElement("p");
-        paragraph.textContent = `User ID: ${item.user_id}`;
+        paragraph.textContent = item.user_id;
         badge.textContent = cnt;
         div.classList.add("outerView");
         paragraph.classList.add("innerView");
