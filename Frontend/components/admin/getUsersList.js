@@ -30,9 +30,13 @@ function renderDataTwo(data) {
         div.setAttribute("key", item._id);
 
         const paragraph = document.createElement("p");
+        const badge = document.createElement("p");
         paragraph.textContent = `User ID: ${item.user_id}`;
+        badge.textContent = cnt;
         div.classList.add("outerView");
         paragraph.classList.add("innerView");
+        badge.classList.add("badge");
+        div.appendChild(badge);
         div.appendChild(paragraph);
         container.appendChild(div);
       } else {
