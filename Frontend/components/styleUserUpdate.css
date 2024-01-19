@@ -1,0 +1,22 @@
+.formContent{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    width: 40%;
+    min-width: 20rem;
+}
+
+
+.formContent > input[type="file"] {
+    background-color: rgb(243, 233, 233);
+    height: 30%;
+    color: none;
+    overflow: hidden; /* Hides the overflow content (file text) */
+}
+
+.formContent > input[type="file"]::file-selector-button {
+    display: none; 
+}
+
