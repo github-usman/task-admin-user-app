@@ -24,6 +24,7 @@ function renderDataTwo(data) {
     let cnt = 0;
 
     data.forEach((item) => {
+      
       if (cnt++ < 2) {
         const div = document.createElement("div");
         div.setAttribute("key", item._id);

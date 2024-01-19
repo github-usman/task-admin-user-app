@@ -17,13 +17,14 @@
   </head>
   <body>
     <h1>Create User</h1>
-    <form action="http://localhost:3000/create" method="post">
+    <form action="http://localhost:3000/create" method="post" enctype="multipart/form-data">
       <label for="user_id">User ID</label>
       <input type="text" placeholder="Enter id" name="user_id" />
       <div>
         <label for="password">Password</label>
         <input type="password" placeholder="Enter User password" name="password" />
       </div>
+        <input type="file" name="dispImage">
       <button>Submit</button>
     </form>
  

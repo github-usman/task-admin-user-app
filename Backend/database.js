@@ -37,8 +37,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    displayProfile: {
-        type: Buffer, // Store image data as Buffer
+    dispImage: {
+        type: String, // Store image data as Buffer
     },
 });
 

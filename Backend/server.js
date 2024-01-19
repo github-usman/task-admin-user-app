@@ -40,13 +40,109 @@ app.post('/register',async(req,res)=>{
     res.status(201).send(newAdmin);
 })
 
+// image multer
+const multer = require('multer');
+const Storage = multer.diskStorage({
+    destination: 'uploadedImages',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + 786 + '-' + '.jpeg');
+    },
+});
 
-app.post('/create',async(req,res)=>{
-    const user = await User.findOne({user_id:req.body.user_id});
-    if(user) return res.status(400).send('already exists');
-    const newUser = await User.create(req.body);
-    res.status(201).send(newUser);
-})
+const upload = multer({ storage: Storage }).single('dispImage');
+
+// end images
+app.post('/create', async (req, res) => {
+    try {
+        // Check if the user_id already exists
+        
+        // If user_id is unique, proceed with image upload and save the new user
+        upload(req, res, async (err) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Internal Server Error');
+            }
+                const existingUser = await User.findOne({ user_id: req.body.user_id });
+        
+                if (existingUser) {
+                    return res.status(400).send('User ID already exists');
+                }
+
+            const newImage = new User({
+                name: req.body.name || '-',
+                password: req.body.password,
+                user_id: req.body.user_id,
+                dispImage: req.body.user_id,
+            });
+
+            await newImage.save();
+            res.send('Successfully done');
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// const multer = require('multer');
+const Storage2 = multer.diskStorage({
+    destination: 'uploadedImages',
+    filename: function (req, file, cb) {
+        // Extract user_id from params or body, prioritizing params
+        const user_id = req.params.user_id || req.body.user_id;
+        if (!user_id) {
+            return cb(new Error('User ID is missing'));
+        }
+        cb(null, `user_${user_id}.jpeg`);
+    },
+});
+const upload2 = multer({ storage: Storage2 }).single('dispImage');
+
+// end images
+app.post('/update/:user_id', async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        // Check if the user with the specified user_id exists
+        const existingUser = await User.findOne({ user_id });
+
+        if (!existingUser) {
+            return res.status(404).send('User not found');
+        }
+
+        // Proceed with image upload and update the existing user's dispImage and name
+        upload2(req, res, async (err) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            // Update dispImage and name fields if provided in the request body
+            if (req.body.name) {
+                existingUser.name = req.body.name;
+            }
+
+            if (req.body.user_id) {
+                existingUser.dispImage = req.body.user_id;
+            }
+
+            // Save the updated user
+            await existingUser.save();
+            res.send('Successfully updated');
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+// app.post('/create',async(req,res)=>{
+//     const user = await User.findOne({user_id:req.body.user_id});
+//     if(user) return res.status(400).send('already exists');
+//     const newUser = await User.create(req.body);
+//     res.status(201).send(newUser);
+// })
 
 // login required
 app.get('/profile',isAuthenticated,(req,res)=>{
