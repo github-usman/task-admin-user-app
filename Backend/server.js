@@ -158,7 +158,7 @@ app.post(`/update`, async (req, res) => {
             // Update dispImage and name fields if provided in the request body
 
                 existingUser.name = req.body.name;
-                existingUser.dispImage = `user_${user_id}`;
+                existingUser.dispImage = `user_${UPDATE_USER_ID}`;
                 existingUser.uploaded = true;
 
             console.log(existingUser.name,existingUser.dispImage, "both value");

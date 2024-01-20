@@ -27,15 +27,7 @@ function fetchData() {
         .then((allUserData) => {
           // Find the user with the matching ID
           const matchingUser = allUserData.find(user => user.user_id === userId);
-
-          for(let i = 0;i<allUserData.length;i++){
-            if(allUserData[i].user_id === userId){
-                console.log(allUserData[i].approval,'appraval');
-                checkUploaded(allUserData[i].approval);
-                console.log('findi');
-                break;
-            }
-          }
+            checkUploaded(matchingUser);
 
         })
         .catch((error) => console.error("Error fetching all user data:", error));
@@ -48,26 +40,32 @@ function checkUploaded(userData) {
   const viewBtn = document.querySelector(".viewBtn");
 
   // Check if the uploaded property is set to false for the retrieved user
-  if (userData.uploaded == false) {
-    console.log(uploaded,' value of uploaded')
-    viewBtn.style.display = "none";
+//   console.log(userData.uploaded, ' uploading sttaus')
+  if (userData.uploaded === false) {
+      viewBtn.style.display = "none";
+    // console.log(userData,' value of uploaded')
     // If condition is met, hide the button
   }else{
     // viewBtn.style.display = "block";
     const user = document.getElementById('user-photo');
     const img = document.createElement('img');
-    img.src = `../../user_${userData.dispImage}.png`;
+    img.src = `/Backend/uploadedImages/${userData.dispImage}.jpeg`;
+    
     user.appendChild(img);
+    img.classList.add('approvalImage');
     const approvalStatus = document.getElementById('approval-status');
     const status = document.createElement('p');
-    if(userData === true){
+
+    const name_of_user = document.getElementById('name-user');
+    name_of_user.innerHTML = userData.name;
+    if(userData.approval === true){
        
         status.innerHTML = 'Accepted By Admin';
        
     }else{
         status.innerHTML = ' Not Accepted By Admin';
     }
-
+     status.classList.add('status');
     approvalStatus.appendChild(status);
   }
 }
