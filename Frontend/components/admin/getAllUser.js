@@ -25,6 +25,9 @@ function renderAllUserData(data) {
   if (Array.isArray(data) && data.length > 0) {
     data.forEach((item) => {
       const div = document.createElement("div");
+      const imgDiv = document.createElement("div");
+      const imgDiv1 = document.createElement("div");
+      const imgDiv2 = document.createElement("div");
       div.setAttribute("key", item._id);
 
       const user_id = document.createElement("p");
@@ -40,9 +43,14 @@ function renderAllUserData(data) {
         dispImage.src = `../../../Backend/uploadedImages/userDummy.png`;
       }
 
-      div.appendChild(user_id);
-      div.appendChild(name);
-      div.appendChild(dispImage);
+      imgDiv1.appendChild(user_id)
+      div.appendChild(imgDiv1);
+      imgDiv2.appendChild(name)
+      div.appendChild(imgDiv2);
+      imgDiv.appendChild(dispImage)
+      div.appendChild(imgDiv);
+
+
 
       if (item.approval === false  && item.uploaded === true) {
         const form = document.createElement("form");
@@ -74,6 +82,7 @@ function renderAllUserData(data) {
 
       deleteForm.appendChild(deleteBtn);
       btnDiv.appendChild(deleteForm);
+      btnDiv.classList.add("two-buttons");
 
       div.appendChild(btnDiv);
       container.appendChild(div);

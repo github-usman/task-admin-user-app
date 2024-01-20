@@ -5,7 +5,7 @@ const apiRoutes = require('./routes/get.js');
 const { connectMongodb, Admin, User } = require('./database.js');
 const PORT = 3000;
 const passport = require("passport");
-const { initializingPassport,isAuthenticated } = require('./passportconfig.js');
+const { initializingPassport, isAuthenticated } = require('./passportconfig.js');
 const expressSession = require('express-session');
 
 app.use(expressSession({ secret: "secret", resave: false, saveUninitialized: false }));
@@ -28,7 +28,6 @@ function updateUser(id) {
     });
 }
 
-
 app.get('/login', (req, res) => {
     res.render("AdminLogin");
 });
@@ -40,6 +39,7 @@ app.post('/login', passport.authenticate("admin", {
 }), async (req, res) => {
     // Handle successful admin authentication
 });
+
 app.post('/user-login', (req, res, next) => {
     passport.authenticate("user", (err, user, info) => {
         if (err) {
@@ -58,8 +58,6 @@ app.post('/user-login', (req, res, next) => {
             // User is now logged in
             updateUser(req.user.user_id)
                 .then(() => {
-                    console.log('logged in succ', req.user.user_id);
-                    console.log(UPDATE_USER_ID,' UPDATE')
                     res.redirect('http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html')
                 })
                 .catch((error) => {
@@ -77,7 +75,6 @@ app.post('/register', async (req, res) => {
     res.status(201).send(newAdmin);
 });
 
-// image multer
 const multer = require('multer');
 const Storage = multer.diskStorage({
     destination: 'uploadedImages',
@@ -88,22 +85,17 @@ const Storage = multer.diskStorage({
 
 const upload = multer({ storage: Storage }).single('dispImage');
 
-// end images
 app.post('/create', async (req, res) => {
     try {
-        // Check if the user_id already exists
-        
-        // If user_id is unique, proceed with image upload and save the new user
         upload(req, res, async (err) => {
             if (err) {
-                console.log(err);
                 return res.status(500).send('Internal Server Error');
             }
-                const existingUser = await User.findOne({ user_id: req.body.user_id });
-        
-                if (existingUser) {
-                    return res.status(400).send('User ID already exists');
-                }
+            const existingUser = await User.findOne({ user_id: req.body.user_id });
+
+            if (existingUser) {
+                return res.status(400).send('User ID already exists');
+            }
 
             const newImage = new User({
                 name: req.body.name || '-',
@@ -121,12 +113,10 @@ app.post('/create', async (req, res) => {
     }
 });
 
-// const multer = require('multer');
 const Storage2 = multer.diskStorage({
     destination: 'uploadedImages',
     filename: function (req, file, cb) {
-        // Extract user_id from params or body, prioritizing params
-        const user_id = UPDATE_USER_ID+'';
+        const user_id = UPDATE_USER_ID + '';
         if (!user_id) {
             return cb(new Error('User ID is missing'));
         }
@@ -134,36 +124,25 @@ const Storage2 = multer.diskStorage({
     },
 });
 const upload2 = multer({ storage: Storage2 }).single('dispImage');
-// update user
+
 app.post(`/update`, async (req, res) => {
     try {
-        
-        const  user_id  = UPDATE_USER_ID+'';
-        console.log(user_id,' user')
-
-        // Check if the user with the specified user_id exists
+        const user_id = UPDATE_USER_ID + '';
         const existingUser = await User.findOne({ user_id });
 
         if (!existingUser) {
             return res.status(404).send('User not found');
         }
 
-        // Upload the file
         upload2(req, res, async (err) => {
             if (err) {
-                console.log(err);
                 return res.status(500).send('Internal Server Error');
             }
 
-            // Update dispImage and name fields if provided in the request body
+            existingUser.name = req.body.name;
+            existingUser.dispImage = `user_${UPDATE_USER_ID}`;
+            existingUser.uploaded = true;
 
-                existingUser.name = req.body.name;
-                existingUser.dispImage = `user_${UPDATE_USER_ID}`;
-                existingUser.uploaded = true;
-
-            console.log(existingUser.name,existingUser.dispImage, "both value");
-
-            // Save the updated user
             await existingUser.save();
             res.redirect('http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html');
         });
@@ -173,36 +152,25 @@ app.post(`/update`, async (req, res) => {
     }
 });
 
-
-
-// getting id
 app.get('/get-id', (req, res) => {
-    res.send({UPDATE_USER_ID});
-  });
-// /delete user and revert on the same default postion
-
+    res.send({ UPDATE_USER_ID });
+});
 
 app.post(`/delete/:user_id`, async (req, res) => {
     try {
-        const {user_id} = req.params// Ensure user_id is a string
-        console.log(user_id);
-        // Check if the user with the specified user_id exists
+        const { user_id } = req.params;
         const existingUser = await User.findOne({ user_id });
 
         if (!existingUser) {
             return res.status(404).send('User not found');
         }
 
-        // Set approval to true
         existingUser.approval = false;
         existingUser.name = '-';
         existingUser.dispImage = 'dispImage786';
         existingUser.uploaded = false;
 
-        // Save the updated user
         await existingUser.save();
-        console.log("deleted value from = ", user_id);
-
         res.redirect('http://127.0.0.1:5500/Frontend/components/admin/AllUsersForAdmin.html');
     } catch (error) {
         console.error(error);
@@ -210,26 +178,16 @@ app.post(`/delete/:user_id`, async (req, res) => {
     }
 });
 
-
-
-////////////approved
-
-
 app.post(`/approved/:user_id`, async (req, res) => {
     try {
-        const {user_id} = req.params// Ensure user_id is a string
-        console.log(user_id);
-        // Check if the user with the specified user_id exists
+        const { user_id } = req.params;
         const existingUser = await User.findOne({ user_id });
 
         if (!existingUser) {
             return res.status(404).send('User not found');
         }
 
-        // Set approval to true
         existingUser.approval = true;
-
-        // Save the updated user
         await existingUser.save();
 
         res.redirect('http://127.0.0.1:5500/Frontend/components/admin/AllUsersForAdmin.html');
@@ -239,17 +197,10 @@ app.post(`/approved/:user_id`, async (req, res) => {
     }
 });
 
+app.get('/profile', (req, res) => {
+    res.send(req.admin);
+});
 
-
-
-
-// login required
-app.get('/profile',(req,res)=>{
-    res.send(req.admin)
-})
-
-
-
-app.listen(PORT || process.env.PORT,()=>{
+app.listen(PORT || process.env.PORT, () => {
     process.stdout.write(`listening on http://localHost ${PORT}\n`);
-})
+});

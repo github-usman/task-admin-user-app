@@ -1,0 +1,71 @@
+body {
+    width: 90%;
+    margin: auto;
+}
+
+
+.Container{
+    display: flex;
+    background-color: #c1d0ecd3;
+    border: 1px solid black;
+}
+.Container>div{
+    border:  1px solid black;
+    padding: 2rem 0rem;
+    padding-left: .5rem;
+}
+
+.btndone {
+    background-color: #136DFA;
+    border: none;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    color: white;
+}
+.btndone:hover{
+    background-color: white;
+    border: 2px solid #136DFA;
+    color: #000000;
+}
+
+.deleteBtn {
+    margin-left: 1rem;
+    border-radius: 5px;
+    background-color: transparent;
+    border: 2px solid rgb(128, 119, 211);
+    padding: 0.45rem 2rem;
+    color: black;
+}
+
+.deleteBtn:hover{
+    background-color: #136DFA;
+    color: white;
+}
+
+
+.allData{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.allData>div{
+    border:  1px solid #000000;
+    padding-bottom: 2rem ;
+    height: 5rem;
+}
+.allData>div>*{
+    margin-left: 3%;
+    margin-top: 3%;
+}
+
+
+
+img{
+    height: 100%;
+    padding-right: 100%;
+}
+
+
+.two-buttons{
+    display: flex;
+    justify-content: space-evenly;
+}
