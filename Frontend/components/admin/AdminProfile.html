@@ -11,6 +11,7 @@
   <body>
     <div class="main">
     <div class="leftForm">
+      
         <form action="http://localhost:3000/create" method="post" enctype="multipart/form-data">
           <h1 class="mb-5 text-center">Create User</h1>
           <label class="w-10" for="user_id">User ID</label>
@@ -19,20 +20,15 @@
             <label for="password">Password</label>
             <input type="password"  name="password" class="mb-3 form-control p-2"/>
           </div>
-        
           <button class="btn btn-primary w-100 p-2 mt-3 ">Submit</button>
         </form>
       </div>
-      <div class="hrBase">
-        <hr>
-      </div>
-    
-      <div >
-      <h1 class="mb-5 text-center ">View User</h1>
-        <div class="formRight" id="cardOfUser">
+    <div class="rightFrom">
+        <h1 class="mb-5 text-center ">View User</h1>
+          <div class="formRight" id="cardOfUser">
+          </div>
+          <a class="btn btn-primary anchorBtn mt-5" href="./AllUsersForAdmin.html"><p>View</p></a>
         </div>
-        <a class="btn btn-primary anchorBtn mt-5" href="./AllUsersForAdmin.html"><p>View</p></a>
-       </div>
     </div>
     <script src="getUsersList.js"></script>
   </body>

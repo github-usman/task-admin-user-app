@@ -5,9 +5,13 @@
     width: 100%;
 }
 
+body{
+    background-color: #c8d9da;
+}
+
 .main {
     display: grid;
-    grid-template-columns: 4fr 4fr;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
     align-content: center;
     align-items: center;
@@ -27,27 +31,45 @@ h1 {
 
 .leftForm{
     display: flex;
+    width: 99.8%;
+    /* margin:auto; */
+    background-color: white;
+    height: 100vh;
+    display: flex;
+}
+
+.leftForm>form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
     width: 70%;
-    margin:auto;
+}
+.rightFrom{
+    background-color: white;
+    width: 99.8%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }
 
 
-
 .formRight{
-    display: flex;
-    flex-direction: column;
     width: 70%;
-    margin: auto;
+    height: 40%;
     text-align: center;
-
 }
 
 
 .anchorBtn{
-    width: 15%;
-    float: right;
+    width: 8rem;
+    align-self:end;
     margin-right: 15%;
-  
+    
 }
 
 
@@ -84,4 +106,29 @@ h1 {
     border-radius: 50%;
     font-size: 18px;
     padding: auto;
+}
+
+@media only screen and (max-width: 750px) {
+
+    .main{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .leftForm{
+        height: 50%;
+        padding:10%
+    }
+    .formRight{
+        width: 100%;
+    }
+    .leftForm>form{
+        width: 100%;
+    }
+    .rightFrom{
+        margin-top: 1%;
+        padding: 5%;
+        height: 50%
+    }
+ 
 }
