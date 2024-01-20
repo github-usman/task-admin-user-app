@@ -5,7 +5,7 @@ const apiRoutes = require('./routes/get.js');
 const { connectMongodb, Admin, User } = require('./database.js');
 const PORT = 3000;
 const passport = require("passport");
-const { initializingPassport } = require('./passportconfig.js');
+const { initializingPassport,isAuthenticated } = require('./passportconfig.js');
 const expressSession = require('express-session');
 
 app.use(expressSession({ secret: "secret", resave: false, saveUninitialized: false }));
@@ -19,6 +19,16 @@ initializingPassport(passport);
 
 app.use('/', apiRoutes);
 
+let UPDATE_USER_ID = 0;
+
+function updateUser(id) {
+    return new Promise((resolve) => {
+        UPDATE_USER_ID = id;
+        resolve();
+    });
+}
+
+
 app.get('/login', (req, res) => {
     res.render("AdminLogin");
 });
@@ -30,13 +40,34 @@ app.post('/login', passport.authenticate("admin", {
 }), async (req, res) => {
     // Handle successful admin authentication
 });
+app.post('/user-login', (req, res, next) => {
+    passport.authenticate("user", (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
 
-app.post('/user-login', passport.authenticate("user", {
-    failureMessage: "Wrong Id Password",
-    successMessage: 'successfully logged in',
-    successRedirect: 'http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html'
-}), async (req, res) => {
-    // Handle successful user authentication
+        if (!user) {
+            return res.status(401).json({ message: 'Authentication failed' });
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+
+            // User is now logged in
+            updateUser(req.user.user_id)
+                .then(() => {
+                    console.log('logged in succ', req.user.user_id);
+                    console.log(UPDATE_USER_ID,' UPDATE')
+                    res.redirect('http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html')
+                })
+                .catch((error) => {
+                    console.error(error);
+                    res.status(500).json({ message: 'Internal Server Error' });
+                });
+        });
+    })(req, res, next);
 });
 
 app.post('/register', async (req, res) => {
@@ -95,7 +126,7 @@ const Storage2 = multer.diskStorage({
     destination: 'uploadedImages',
     filename: function (req, file, cb) {
         // Extract user_id from params or body, prioritizing params
-        const user_id = req.params.user_id || req.body.user_id;
+        const user_id = UPDATE_USER_ID+'';
         if (!user_id) {
             return cb(new Error('User ID is missing'));
         }
@@ -103,10 +134,12 @@ const Storage2 = multer.diskStorage({
     },
 });
 const upload2 = multer({ storage: Storage2 }).single('dispImage');
-
-app.post('/update/:user_id', async (req, res) => {
+// update user
+app.post(`/update`, async (req, res) => {
     try {
-        const { user_id } = req.params;
+        
+        const  user_id  = UPDATE_USER_ID+'';
+        console.log(user_id,' user')
 
         // Check if the user with the specified user_id exists
         const existingUser = await User.findOne({ user_id });
@@ -126,17 +159,89 @@ app.post('/update/:user_id', async (req, res) => {
 
                 existingUser.name = req.body.name;
                 existingUser.dispImage = `user_${user_id}`;
+                existingUser.uploaded = true;
+
             console.log(existingUser.name,existingUser.dispImage, "both value");
 
             // Save the updated user
             await existingUser.save();
-            res.send('Successfully updated');
+            res.redirect('http://127.0.0.1:5500/Frontend/components/users/UserUpdate.html');
         });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 });
+
+
+
+// getting id
+app.get('/get-id', (req, res) => {
+    res.send({UPDATE_USER_ID});
+  });
+// /delete user and revert on the same default postion
+
+
+app.post(`/delete/:user_id`, async (req, res) => {
+    try {
+        const {user_id} = req.params// Ensure user_id is a string
+        console.log(user_id);
+        // Check if the user with the specified user_id exists
+        const existingUser = await User.findOne({ user_id });
+
+        if (!existingUser) {
+            return res.status(404).send('User not found');
+        }
+
+        // Set approval to true
+        existingUser.approval = false;
+        existingUser.name = '-';
+        existingUser.dispImage = 'dispImage786';
+        existingUser.uploaded = false;
+
+        // Save the updated user
+        await existingUser.save();
+        console.log("deleted value from = ", user_id);
+
+        res.redirect('http://127.0.0.1:5500/Frontend/components/admin/AllUsersForAdmin.html');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+////////////approved
+
+
+app.post(`/approved/:user_id`, async (req, res) => {
+    try {
+        const {user_id} = req.params// Ensure user_id is a string
+        console.log(user_id);
+        // Check if the user with the specified user_id exists
+        const existingUser = await User.findOne({ user_id });
+
+        if (!existingUser) {
+            return res.status(404).send('User not found');
+        }
+
+        // Set approval to true
+        existingUser.approval = true;
+
+        // Save the updated user
+        await existingUser.save();
+
+        res.redirect('http://127.0.0.1:5500/Frontend/components/admin/AllUsersForAdmin.html');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+
 
 // login required
 app.get('/profile',(req,res)=>{

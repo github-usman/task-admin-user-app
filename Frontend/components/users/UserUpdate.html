@@ -27,26 +27,33 @@
                     <p>Name</p>
                     <p class="border border-1 p-1"> Usman Ali Ansari</p>
                     <p>Photo</p>
-                    <img src="../../backround-cirlce.png" width="250px" alt="">
+                    <div id="user-photo"></div>
+                    <div id="approval-status"></div>
+                    <!-- <img src="../../backround-cirlce.png" width="250px" alt=""> -->
                 </div>
                
             </div>
         </div>
     </div>
 
-
-    <!-- update form -->
-    <form action="http://localhost:3000/update/9" method="post" enctype="multipart/form-data">
+    <!-- Container for dynamically updating the form -->
+  
+    <form id="updateForm" action="http://localhost:3000/update" method="post" enctype="multipart/form-data">
+        
         <div class="formContent">
-        <label for="name">Name</label>
-        <input type="text"  name="name" class="mb-3 form-control p-2">
-        <label for="dispImage">Photo</label>
-        <input type="file" name="dispImage" class="mb-3 form-control p-2">
-        <button class="btn btn-primary">Upload</button>
-       </div>
+            <label for="name">Name</label>
+            <input type="text" name="name" class="mb-3 form-control p-2">
+            <label for="dispImage">Photo</label>
+            <input type="file" name="dispImage" class="mb-3 form-control p-2">
+            <button class="btn btn-primary">Upload</button>
+        </div>
     </form>
-    <!-- scirpt cdn -->
+
+    <!-- script cdn -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+    <!-- Include the external JavaScript file -->
+    <script src="update.js"></script>
 </body>
 </html>

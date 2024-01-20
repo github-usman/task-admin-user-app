@@ -62,3 +62,10 @@ exports.initializingPassport = (passport) => {
         }
     });
 };
+
+
+exports.isAuthenticated = (req,res,next)=>{
+    if(req.admin) return next();
+    else if(req.user) return next();
+    res.redirect('/');
+};

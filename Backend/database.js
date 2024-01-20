@@ -38,7 +38,16 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     dispImage: {
-        type: String, // Store image data as Buffer
+        type: String, 
+    },
+    uploaded: {
+        type: Boolean,
+        default:false,
+        
+    },
+    approval: {
+        type: Boolean,
+        default:false,
     },
 });
 
